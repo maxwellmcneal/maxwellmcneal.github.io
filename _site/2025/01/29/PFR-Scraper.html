@@ -1,0 +1,462 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Scraping Pro Football Reference</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+  </head>
+  <body>
+	<header>
+		<nav>
+  
+    <a href="/">Home</a>
+  
+    <a href="/about.html">About</a>
+  
+    <a href="/blog.html">Blog</a>
+  
+</nav>
+    </header>
+	<h1> Scraping Pro Football Reference</h1>
+<p> Published 29 January 2025 </p>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>As an avid sports fan and data scientist, I’ve always liked looking into the statistics behind sports. And given the very public nature of NFL games and their corresponding box scores and statistics, I was quite surprised that I wasn’t easily able to track down a good dataset for the NFL statistics that I was interested in. Specifically, I was looking for career statistics for all players, past and present, in the NFL. I knew the data was out there and had been organized by various websites, most notably <a href="https://www.pro-football-reference.com">Pro Football Reference</a>, so I decided to write a simple web scraper for PFR that would get me the data I wanted. The code for the web scraper and the resulting data can be found at this <a href="https://www.github.com">github repo</a>. In this blog post, I’m going to go over the resulting data from the scraper, clean it up a bit, and show some simple analysis and visualizations as a kind of proof of concept for potential uses of the dataset.</p>
+
+<p>LITERATURE REVIEW! TALK ABOUT DATASET ON KAGGLE AND GIVE CREDIT TO GUY WHO WROTE ORIGINAL PFR SCRAPER!!!</p>
+
+<h2 id="importing-and-cleaning-the-dataset">Importing and Cleaning the Dataset</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="n">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="kn">import</span> <span class="n">seaborn</span> <span class="k">as</span> <span class="n">sns</span>
+
+<span class="n">player_stats</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">read_csv</span><span class="p">(</span><span class="sh">'</span><span class="s">player_stats.csv</span><span class="sh">'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Given the often tenuous nature of web scraping, the data is likely to contain some missing values. This code tells me how many missing values each column has.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">player_stats</span><span class="p">.</span><span class="nf">isnull</span><span class="p">().</span><span class="nf">sum</span><span class="p">().</span><span class="n">loc</span><span class="p">[</span><span class="n">player_stats</span><span class="p">.</span><span class="nf">isnull</span><span class="p">().</span><span class="nf">sum</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># Code Output
+</span><span class="n">position</span> <span class="mi">10</span> 
+<span class="n">height</span> <span class="mi">259</span> 
+<span class="n">weight</span> <span class="mi">259</span> 
+<span class="n">dtype</span><span class="p">:</span> <span class="n">int64</span>
+</code></pre></div></div>
+
+<p>I can see that we have 3 columns with missing values, <code>position</code>, <code>height</code>, and <code>weight</code>. I plan on doing analysis later using <code>position</code>, and it seems straightforward to find the missing position for only 10 players, so let’s see if I can fix the missing values manually. First, I want to take a look at the effected rows.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">missing_position</span> <span class="o">=</span> <span class="n">player_stats</span><span class="p">[</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">position</span><span class="sh">'</span><span class="p">].</span><span class="nf">isnull</span><span class="p">()]</span>
+<span class="n">missing_position</span><span class="p">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">10</span><span class="p">]</span>
+</code></pre></div></div>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: right"> </th>
+      <th style="text-align: right">player_id</th>
+      <th style="text-align: left">name</th>
+      <th style="text-align: right">position</th>
+      <th style="text-align: right">career_begin</th>
+      <th style="text-align: right">career_end</th>
+      <th style="text-align: left">active</th>
+      <th style="text-align: left">height</th>
+      <th style="text-align: left">weight</th>
+      <th style="text-align: right">games_reg</th>
+      <th style="text-align: right">games_started_reg</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: right">661</td>
+      <td style="text-align: right">662</td>
+      <td style="text-align: left">Daniel Archibong</td>
+      <td style="text-align: right">nan</td>
+      <td style="text-align: right">2021</td>
+      <td style="text-align: right">2021</td>
+      <td style="text-align: left">False</td>
+      <td style="text-align: left">6-6</td>
+      <td style="text-align: left">300lb</td>
+      <td style="text-align: right">2</td>
+      <td style="text-align: right">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">2766</td>
+      <td style="text-align: right">2767</td>
+      <td style="text-align: left">Josiah Bronson</td>
+      <td style="text-align: right">nan</td>
+      <td style="text-align: right">2021</td>
+      <td style="text-align: right">2022</td>
+      <td style="text-align: left">False</td>
+      <td style="text-align: left">6-3</td>
+      <td style="text-align: left">295lb</td>
+      <td style="text-align: right">8</td>
+      <td style="text-align: right">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">5229</td>
+      <td style="text-align: right">5230</td>
+      <td style="text-align: left">Tyler Coyle</td>
+      <td style="text-align: right">nan</td>
+      <td style="text-align: right">2021</td>
+      <td style="text-align: right">2022</td>
+      <td style="text-align: left">False</td>
+      <td style="text-align: left">6-1</td>
+      <td style="text-align: left">210lb</td>
+      <td style="text-align: right">3</td>
+      <td style="text-align: right">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">5403</td>
+      <td style="text-align: right">5404</td>
+      <td style="text-align: left">Tae Crowder</td>
+      <td style="text-align: right">nan</td>
+      <td style="text-align: right">2020</td>
+      <td style="text-align: right">2023</td>
+      <td style="text-align: left">True</td>
+      <td style="text-align: left">6-3</td>
+      <td style="text-align: left">235lb</td>
+      <td style="text-align: right">43</td>
+      <td style="text-align: right">31</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">5865</td>
+      <td style="text-align: right">5866</td>
+      <td style="text-align: left">Michael Davis</td>
+      <td style="text-align: right">nan</td>
+      <td style="text-align: right">2017</td>
+      <td style="text-align: right">2024</td>
+      <td style="text-align: left">True</td>
+      <td style="text-align: left">6-2</td>
+      <td style="text-align: left">196lb</td>
+      <td style="text-align: right">122</td>
+      <td style="text-align: right">76</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">10062</td>
+      <td style="text-align: right">10063</td>
+      <td style="text-align: left">JaQuan Hardy</td>
+      <td style="text-align: right">nan</td>
+      <td style="text-align: right">2021</td>
+      <td style="text-align: right">2021</td>
+      <td style="text-align: left">False</td>
+      <td style="text-align: left">5-10</td>
+      <td style="text-align: left">225lb</td>
+      <td style="text-align: right">3</td>
+      <td style="text-align: right">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">10797</td>
+      <td style="text-align: right">10798</td>
+      <td style="text-align: left">Grant Hermanns</td>
+      <td style="text-align: right">nan</td>
+      <td style="text-align: right">2022</td>
+      <td style="text-align: right">2022</td>
+      <td style="text-align: left">False</td>
+      <td style="text-align: left">6-7</td>
+      <td style="text-align: left">305lb</td>
+      <td style="text-align: right">2</td>
+      <td style="text-align: right">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">16258</td>
+      <td style="text-align: right">16259</td>
+      <td style="text-align: left">Nate McCrary</td>
+      <td style="text-align: right">nan</td>
+      <td style="text-align: right">2021</td>
+      <td style="text-align: right">2021</td>
+      <td style="text-align: left">False</td>
+      <td style="text-align: left">6-0</td>
+      <td style="text-align: left">213lb</td>
+      <td style="text-align: right">1</td>
+      <td style="text-align: right">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">21560</td>
+      <td style="text-align: right">21561</td>
+      <td style="text-align: left">Lenny Sachs</td>
+      <td style="text-align: right">nan</td>
+      <td style="text-align: right">1920</td>
+      <td style="text-align: right">1926</td>
+      <td style="text-align: left">False</td>
+      <td style="text-align: left">nan</td>
+      <td style="text-align: left">nan</td>
+      <td style="text-align: right">0</td>
+      <td style="text-align: right">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">22884</td>
+      <td style="text-align: right">22885</td>
+      <td style="text-align: left">Chris Smith</td>
+      <td style="text-align: right">nan</td>
+      <td style="text-align: right">2024</td>
+      <td style="text-align: right">2024</td>
+      <td style="text-align: left">True</td>
+      <td style="text-align: left">6-1</td>
+      <td style="text-align: left">305lb</td>
+      <td style="text-align: right">5</td>
+      <td style="text-align: right">0</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Looking at all the players that are missing their position, there doesn’t seem to be any pattern as to why it’s missing. It is mostly players from recent years, but there is a player from the 1920’s. There’s a mix of active and non-active players, some players have played quite a few games while others only played a couple, and only one of the ten is also missing their height and weight. This doesn’t seem to be a systemic problem with the scraper, but rather an issue with the data source, so I feel comfortable just manually fixing the data.
+For the first player, Daniel Archibong, his personal Pro Football Reference page, seen <a href="https://www.pro-football-reference.com/players/A/ArchDa01.htm">here</a>, shows that he was listed as a DT for the 2 games he played in Pittsburgh back in 2021. For some reason, his position isn’t listed on the full list of all players whose last names begin with the letter A, which can be found <a href="https://www.pro-football-reference.com/players/A">here</a>. That’s why his position was not recorded by the scraper. Regardless, it is clear that Daniel Archibong was a DT, so his position can be updated as such. The missing positions of all the other players on this list can be solved similarly. Then, all I have to do is update each of their positions with the following code:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">player_stats</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">player_id</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">662</span><span class="p">,</span> <span class="sh">'</span><span class="s">position</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="sh">'</span><span class="s">DT</span><span class="sh">'</span>
+<span class="n">player_stats</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">player_id</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2767</span><span class="p">,</span> <span class="sh">'</span><span class="s">position</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="sh">'</span><span class="s">DT</span><span class="sh">'</span>
+<span class="n">player_stats</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">player_id</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">5230</span><span class="p">,</span> <span class="sh">'</span><span class="s">position</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="sh">'</span><span class="s">S</span><span class="sh">'</span>
+<span class="n">player_stats</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">player_id</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">5404</span><span class="p">,</span> <span class="sh">'</span><span class="s">position</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="sh">'</span><span class="s">LB</span><span class="sh">'</span>
+<span class="n">player_stats</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">player_id</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">5866</span><span class="p">,</span> <span class="sh">'</span><span class="s">position</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="sh">'</span><span class="s">CB</span><span class="sh">'</span>
+<span class="n">player_stats</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">player_id</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">10063</span><span class="p">,</span> <span class="sh">'</span><span class="s">position</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="sh">'</span><span class="s">RB</span><span class="sh">'</span>
+<span class="n">player_stats</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">player_id</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">10798</span><span class="p">,</span> <span class="sh">'</span><span class="s">position</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="sh">'</span><span class="s">G</span><span class="sh">'</span>
+<span class="n">player_stats</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">player_id</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">16259</span><span class="p">,</span> <span class="sh">'</span><span class="s">position</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="sh">'</span><span class="s">RB</span><span class="sh">'</span>
+<span class="n">player_stats</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">player_id</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">21561</span><span class="p">,</span> <span class="sh">'</span><span class="s">position</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="sh">'</span><span class="s">LE</span><span class="sh">'</span>
+<span class="n">player_stats</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">player_id</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">22885</span><span class="p">,</span> <span class="sh">'</span><span class="s">position</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="sh">'</span><span class="s">DL</span><span class="sh">'</span>
+</code></pre></div></div>
+
+<p>Now, I can quickly verify that there are no longer any missing values in <code>position</code>.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">position</span><span class="sh">'</span><span class="p">].</span><span class="nf">isnull</span><span class="p">().</span><span class="nf">sum</span><span class="p">()</span>
+
+<span class="c1"># Code Output
+</span><span class="mi">0</span>
+</code></pre></div></div>
+
+<p>As for <code>height</code> and <code>weight</code>, each column is missing 259 values. I scraped both columns together with a single regex expression, which gives me the sense that all the missing values for these columns come from pages where my regex failed to find a match. This would mean that all the missing values for both columns are in the same 259 rows. I’m going to take a peek at the rows that are missing <code>height</code> to double check.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">missing_height</span> <span class="o">=</span> <span class="n">player_stats</span><span class="p">[</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">height</span><span class="sh">'</span><span class="p">].</span><span class="nf">isnull</span><span class="p">()]</span>
+<span class="n">missing_height</span><span class="p">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">10</span><span class="p">,</span> <span class="p">:</span><span class="mi">10</span><span class="p">]</span>
+</code></pre></div></div>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: right"> </th>
+      <th style="text-align: right">player_id</th>
+      <th style="text-align: left">name</th>
+      <th style="text-align: left">position</th>
+      <th style="text-align: right">career_begin</th>
+      <th style="text-align: right">career_end</th>
+      <th style="text-align: left">active</th>
+      <th style="text-align: right">height</th>
+      <th style="text-align: right">weight</th>
+      <th style="text-align: right">games_reg</th>
+      <th style="text-align: right">games_started_reg</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: right">460</td>
+      <td style="text-align: right">461</td>
+      <td style="text-align: left">Anderson</td>
+      <td style="text-align: left">WB</td>
+      <td style="text-align: right">1922</td>
+      <td style="text-align: right">1922</td>
+      <td style="text-align: left">False</td>
+      <td style="text-align: right">nan</td>
+      <td style="text-align: right">nan</td>
+      <td style="text-align: right">1</td>
+      <td style="text-align: right">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">582</td>
+      <td style="text-align: right">583</td>
+      <td style="text-align: left">Jaby Andrews</td>
+      <td style="text-align: left">WB-DB</td>
+      <td style="text-align: right">1934</td>
+      <td style="text-align: right">1934</td>
+      <td style="text-align: left">False</td>
+      <td style="text-align: right">nan</td>
+      <td style="text-align: right">nan</td>
+      <td style="text-align: right">2</td>
+      <td style="text-align: right">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">782</td>
+      <td style="text-align: right">783</td>
+      <td style="text-align: left">Burl Atcheson</td>
+      <td style="text-align: left">E</td>
+      <td style="text-align: right">1922</td>
+      <td style="text-align: right">1922</td>
+      <td style="text-align: left">False</td>
+      <td style="text-align: right">nan</td>
+      <td style="text-align: right">nan</td>
+      <td style="text-align: right">1</td>
+      <td style="text-align: right">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">923</td>
+      <td style="text-align: right">924</td>
+      <td style="text-align: left">Backnor</td>
+      <td style="text-align: left">C</td>
+      <td style="text-align: right">1921</td>
+      <td style="text-align: right">1921</td>
+      <td style="text-align: left">False</td>
+      <td style="text-align: right">nan</td>
+      <td style="text-align: right">nan</td>
+      <td style="text-align: right">1</td>
+      <td style="text-align: right">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">1103</td>
+      <td style="text-align: right">1104</td>
+      <td style="text-align: left">Hugh Bancroft</td>
+      <td style="text-align: left">E</td>
+      <td style="text-align: right">1923</td>
+      <td style="text-align: right">1923</td>
+      <td style="text-align: left">False</td>
+      <td style="text-align: right">nan</td>
+      <td style="text-align: right">nan</td>
+      <td style="text-align: right">2</td>
+      <td style="text-align: right">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">1283</td>
+      <td style="text-align: right">1284</td>
+      <td style="text-align: left">Eddie Barnikow</td>
+      <td style="text-align: left">FB</td>
+      <td style="text-align: right">1926</td>
+      <td style="text-align: right">1926</td>
+      <td style="text-align: left">False</td>
+      <td style="text-align: right">nan</td>
+      <td style="text-align: right">nan</td>
+      <td style="text-align: right">2</td>
+      <td style="text-align: right">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">1326</td>
+      <td style="text-align: right">1327</td>
+      <td style="text-align: left">John Barsha</td>
+      <td style="text-align: left">FB</td>
+      <td style="text-align: right">1920</td>
+      <td style="text-align: right">1920</td>
+      <td style="text-align: left">False</td>
+      <td style="text-align: right">nan</td>
+      <td style="text-align: right">nan</td>
+      <td style="text-align: right">3</td>
+      <td style="text-align: right">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">1485</td>
+      <td style="text-align: right">1486</td>
+      <td style="text-align: left">Fred Beach</td>
+      <td style="text-align: left">G</td>
+      <td style="text-align: right">1926</td>
+      <td style="text-align: right">1926</td>
+      <td style="text-align: left">False</td>
+      <td style="text-align: right">nan</td>
+      <td style="text-align: right">nan</td>
+      <td style="text-align: right">1</td>
+      <td style="text-align: right">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">1564</td>
+      <td style="text-align: right">1565</td>
+      <td style="text-align: left">John Beckwith</td>
+      <td style="text-align: left">HB</td>
+      <td style="text-align: right">1920</td>
+      <td style="text-align: right">1920</td>
+      <td style="text-align: left">False</td>
+      <td style="text-align: right">nan</td>
+      <td style="text-align: right">nan</td>
+      <td style="text-align: right">3</td>
+      <td style="text-align: right">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">1776</td>
+      <td style="text-align: right">1777</td>
+      <td style="text-align: left">Eddie Benz</td>
+      <td style="text-align: left">E</td>
+      <td style="text-align: right">1922</td>
+      <td style="text-align: right">1922</td>
+      <td style="text-align: left">False</td>
+      <td style="text-align: right">nan</td>
+      <td style="text-align: right">nan</td>
+      <td style="text-align: right">1</td>
+      <td style="text-align: right">1</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>It certainly seems to be the case that every row that is missing height is also missing weight. This next code snippet can confirm this.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">missing_height_and_weight</span> <span class="o">=</span> <span class="n">missing_height</span><span class="p">[</span><span class="sh">'</span><span class="s">player_id</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="n">player_stats</span><span class="p">[</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">weight</span><span class="sh">'</span><span class="p">].</span><span class="nf">isnull</span><span class="p">()][</span><span class="sh">'</span><span class="s">player_id</span><span class="sh">'</span><span class="p">]</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">missing_height_and_weight</span><span class="p">.</span><span class="nf">unique</span><span class="p">())</span>
+
+<span class="c1"># Code Output
+</span><span class="p">[</span> <span class="bp">True</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>Let’s look a little further into this to see if this is a problem with my scraper or a problem with the underlying data. However, looking at the first row, there appears to be a player named only “Anderson” who played one game in 1922. Their individual Pro Football Reference page, seen <a href="https://www.pro-football-reference.com/players/A/Andexx20.htm">here</a>, shows very little data, just that they played a single game in 1922. No full name, no statistics, no height or weight. It seems the scraper did all it could here, this page offers little value and should probably just be removed from the data set. We can see what looks like a similar case in the fourth row, a played named only “Backnor” with one career game in the 1920’s as well. Let’s revisit this after we solve the height and weight situation.</p>
+
+<p>Moving on to the second row, Jaby Andrew’s PFR page, seen <a href="https://www.pro-football-reference.com/players/A/AndrJa20.htm">here</a>, shows that Jaby Andrews has a listed weight of 208lbs, but no listed height. However, the data shows both Jaby’s height and weight as missing. This is because the scraper is expecting to find a height and weight regex match in the form of “X-Y, Zlb”, where X, Y, and Z are numbers. When a page is missing the height, like Jaby Andrew’s, or weight, the regex entirely fails to find a match, leaving both height and weight as <code>NaN</code>. So this is clearly an issue with the scraper that I could solve by performing two separate regex matches to find height and weight independently. This would give us more complete data, but each of these 259 rows would still be missing either height or weight. So in this case, I’m going to choose to just drop all 259 columns to completely remove all missing values from the data. [^1] 
+[^1]:I’m also partially motivated to not fix the scraper due to the fact that the web scraping rate limit on PFR means that rerunning the scraper would take about 48 hours, and I plan on finishing this blog post well before 48 hours from now.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">player_stats</span> <span class="o">=</span> <span class="n">player_stats</span><span class="p">.</span><span class="nf">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="sh">'</span><span class="s">height</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">weight</span><span class="sh">'</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>Now we can revisit the earlier issue of rows with players like “Anderson” and “Backnor”. While those two instances were removed due to their missing height and weight, there will likely be more rows with a similar problem. It seems to me that the easiest way to check this would be to split the name column on every space, which will give us a list, then measure the length of each list that results from the split. Then I will simple print all players with a name list length of 1.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">name_list_len</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">name</span><span class="sh">'</span><span class="p">].</span><span class="nf">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nf">len</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="nf">split</span><span class="p">()))</span>
+<span class="n">one_name</span> <span class="o">=</span> <span class="n">player_stats</span><span class="p">[</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">name_list_len</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">one_name</span><span class="p">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">10</span><span class="p">,</span> <span class="p">:</span><span class="mi">10</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>|       |   player_id | name      | position   |   career_begin |   career_end | active   | height   | weight   |   games_reg |   games_started_reg |
+|——:|————:|:———-|:———–|—————:|————-:|:———|:———|:———|————:|——————–:|
+|  3166 |        3167 | Brunswick | G          |           1920 |         1920 | False    | 5-10     | 182lb    |           1 |                   0 |
+| 20823 |       20824 | Riley     | G          |           1924 |         1924 | False    | 5-11     | 195lb    |           1 |                   1 |
+Ah, another pair of players from the 1920’s who only played a single game apiece. I’m going to go ahead and trim these rows from the dataset as well.</p>
+
+<p>A little side note here is that the <code>player_id</code> assigned to each player is simply their location in a list of all player names sorted alphabetically, where the first player has <code>player_id = 1</code>. However, when pandas gives indices to the rows in DataFrames, it starts at 0. So “Brunswick” has a <code>player_id</code> of 3167, while their index in the DataFrame is 3166. This is typically not an issue as long as you remember to use the DataFrame indices when referring to specific rows, such as when removing individual rows or using <code>iloc</code>.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">player_stats</span><span class="p">.</span><span class="nf">drop</span><span class="p">(</span><span class="mi">3166</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">player_stats</span><span class="p">.</span><span class="nf">drop</span><span class="p">(</span><span class="mi">20823</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">DataFrame dimensions: </span><span class="sh">'</span> <span class="o">+</span> <span class="nf">str</span><span class="p">(</span><span class="n">player_stats</span><span class="p">.</span><span class="n">shape</span><span class="p">))</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">Number of missing values: </span><span class="sh">'</span> <span class="o">+</span> <span class="nf">str</span><span class="p">(</span><span class="n">player_stats</span><span class="p">.</span><span class="nf">isna</span><span class="p">().</span><span class="nf">sum</span><span class="p">().</span><span class="nf">sum</span><span class="p">()))</span>
+
+<span class="c1"># Code Output
+</span><span class="n">DataFrame</span> <span class="n">dimensions</span><span class="p">:</span> <span class="p">(</span><span class="mi">27695</span><span class="p">,</span> <span class="mi">163</span><span class="p">)</span> 
+<span class="n">Number</span> <span class="n">of</span> <span class="n">missing</span> <span class="n">values</span><span class="p">:</span> <span class="mi">0</span>
+</code></pre></div></div>
+<p>After cleaning the missing values and rows with only a single name from the data, the DataFrame contains 27695 rows and 163 columns.</p>
+<h2 id="adding-additional-columns">Adding Additional Columns</h2>
+<p>The dataset contains over 150 columns of player career statistics. Regular season and post season statistics are separated into different columns. !!!!!!!!!!!!!!!!!!!!!!!!!</p>
+
+<p>First, I’m going to create some helper columns to make future analysis easier. The first one is going to be <code>career_length</code>, which will be the number of years the player has played in the league. The equation for this is <code>career_length = career_end - career_start + 1</code>. Adding the one is necessary to correct the off-by-one error. A player whose first year and last year in the NFL were both 2013 played one year, 2013, even though the difference between their first and last year is zero.</p>
+
+<p>The other column will be <code>position_list</code>. The current <code>position</code> column works great for players with only one listed position as it contains a string with their position. However, for players with multiple listed positions, it contains each position separated by a hyphen in a single string. Performing a simple match for all players whose position == “QB” would exclude any players who have any other positions listed, even though they shouldn’t be. So I can just add a new column that splits the string in <code>position</code> on each hyphen and stores the resulting list. (As an aside, it is technically stored in a pandas Series object, which behaves similarly to, but not exactly like, a base python list.)</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">career_length</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">career_end</span><span class="sh">'</span><span class="p">]</span> <span class="o">-</span> <span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">career_begin</span><span class="sh">'</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">position_list</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">position</span><span class="sh">'</span><span class="p">].</span><span class="nb">str</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="sh">'</span><span class="s">-</span><span class="sh">'</span><span class="p">)</span>
+</code></pre></div></div>
+<h2 id="exploratory-data-analysis--visualizations">Exploratory Data Analysis / Visualizations</h2>
+<p>With all of that done, now it’s quite trivial to perform quick exploratory data analysis on the data from the web scraper. Let’s say I want to see the average number of regular season games played by QBs across all of NFL history, and create a histogram to visualize that data. We can start by filtering the player data to only that of the players where at least one of their listed positions is “QB”.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">qb_stats</span> <span class="o">=</span> <span class="n">player_stats</span><span class="p">[</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">position_list</span><span class="sh">'</span><span class="p">].</span><span class="nf">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="sh">'</span><span class="s">QB</span><span class="sh">'</span> <span class="ow">in</span> <span class="n">x</span><span class="p">)]</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">str</span><span class="p">(</span><span class="n">qb_stats</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="sh">'</span><span class="s"> QBs in the dataset</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="c1"># Code Output
+</span><span class="mi">1087</span> <span class="n">QBs</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">dataset</span>
+</code></pre></div></div>
+
+<p>We are left with 1087 players listed as a quarterback across all of NFL history. From here, it is easy to find summary statistics about regular season games played. And, using the python graphical package of your choice (in my case, seaborn), it’s very easy to quickly make visualizations, like histograms or scatterplots.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">print</span><span class="p">(</span><span class="n">qb_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">games_reg</span><span class="sh">'</span><span class="p">].</span><span class="nf">describe</span><span class="p">())</span>
+<span class="n">sns</span><span class="p">.</span><span class="nf">histplot</span><span class="p">(</span><span class="n">qb_stats</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="sh">'</span><span class="s">games_reg</span><span class="sh">'</span><span class="p">,</span> <span class="n">binwidth</span><span class="o">=</span><span class="mi">10</span><span class="p">).</span><span class="nf">set</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sh">'</span><span class="s">Regular Season Games Played (QBs)</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="c1"># Code Output
+</span><span class="n">count</span> <span class="mf">1087.000000</span> 
+<span class="n">mean</span> <span class="mf">46.971481</span> 
+<span class="n">std</span> <span class="mf">57.329426</span> 
+<span class="nb">min</span> <span class="mf">0.000000</span> 
+<span class="mi">25</span><span class="o">%</span> <span class="mf">6.000000</span> 
+<span class="mi">50</span><span class="o">%</span> <span class="mf">22.000000</span> 
+<span class="mi">75</span><span class="o">%</span> <span class="mf">71.500000</span> 
+<span class="nb">max</span> <span class="mf">340.000000</span> 
+<span class="n">Name</span><span class="p">:</span> <span class="n">games_reg</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">float64</span>
+</code></pre></div></div>
+<p><img src="/assets/images/plot_1.png" alt="Image" /></p>
+
+<p>The summary statistics show the mean number of regular season games played is 46.97, but the standard deviation, at 57.33, is huge relative to the mean, due to the large right skew seen in the histogram. The median of 22 is a better measure of central tendency when looking at the histogram. The histogram also illustrates that most quarterbacks appear in 10 regular season games or fewer, and as the number of career games increases, there are fewer and fewer QBs whose career spanned that many regular season games. This difference in games played causes most charts of counting statistics to look similar to the above chart, with a large bar in the start then a shrinking tail skewed right. More games means more opportunity to rack up numbers. For instance, let’s look at the histogram of career regular season passing yards.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sns</span><span class="p">.</span><span class="nf">histplot</span><span class="p">(</span><span class="n">qb_stats</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="sh">'</span><span class="s">pass_yds_reg</span><span class="sh">'</span><span class="p">,</span> <span class="n">binwidth</span><span class="o">=</span><span class="mi">1000</span><span class="p">).</span><span class="nf">set</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sh">'</span><span class="s">QB Career Regular Season Passing Yards</span><span class="sh">'</span><span class="p">)</span>
+</code></pre></div></div>
+<p><img src="/assets/images/plot_2.png" alt="Image" /></p>
+
+<p>Due to the correlation between regular season games played and passing yards, the same trend appears in the chart, only even more exaggerated. Of the 1087 quarterbacks we started with, the chart shows that over 500 of them, or about half, never eclipse 1000 career regular season passing yards. While it’s hard to play a lot of games in the league as a quarterback, it seems to be even harder to rack up many thousands of passing yards. We can calculate the numerical correlation between career length and regular season passing yards, then use a scatterplot to visualize the relationship between both variables.</p>
+
+  </body>
+</html>
