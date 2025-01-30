@@ -1,14 +1,14 @@
 ---
 layout: default
-title: Blog
+title: Blog - maxwellmcneal
 ---
-<h1>Latest Posts</h1>
-
+<h1>All Posts</h1>
 <ul>
 	{% for post in site.posts %}
-		<li>
+		<article>
 			<h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
-			{{ post.excerpt }}
-		</li>
+			<p>Published {{ post.date | date_to_long_string }} </p>
+			<p>{{ post.excerpt }} </p>
+		</article>
 	{% endfor %}
 </ul>
