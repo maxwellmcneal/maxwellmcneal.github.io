@@ -1,2 +1,4 @@
-#theme: monophase
-remote_theme: monophase/monophase
+plugins:
+  - jekyll-remote-theme
+
+remote_theme: zivhub/monophase@main
