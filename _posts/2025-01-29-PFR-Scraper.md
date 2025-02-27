@@ -2,7 +2,7 @@
 layout: post
 author: Maxwell McNeal
 title: Scraping Pro Football Reference
-excerpt: Extracting NFL players' career statistics from pro-football-reference.com using Python.
+excerpt: Extracting NFL players' career statistics from pro-football-reference.com using Python
 ---
 
 ## Introduction

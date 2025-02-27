@@ -2,7 +2,7 @@
 layout: post
 author: Maxwell McNeal
 title: Who was the best NFL player without a possession?
-excerpt: Football players with no football - An in-depth look at the greatest NFL players who never held the ball
+excerpt: The best football players with no football
 ---
 On December 14th, 2024, Travis Hunter won the Heisman Trophy, the award for the best player in college football that year. On April 24th, at the 2025 NFL draft, we are going to hear his name get called, and watch the most dynamic two-way player since Deion Sanders, his college coach, get drafted. His skills on both sides of the ball make him an absolute outlier in modern football.
 
@@ -2295,6 +2295,7 @@ There are 267 players on the full list. Mostly offensive linemen, with some defe
 
 From here, selecting the best player gets hazy. Staying true to the original question, Walter Jones has the fewest fumble recoveries on this entire list. So he may be the best answer if you value minimizing total posessions. Dan Hampton and Joe Klecko are the only two defensive players from the modern era of the NFL. Hampton edges out Klecko in sacks, at 82.5 versus 78, but Klecko transistioned to a nose tackle at the end of his career, trading sacks numbers for impactful run stopping.
 
+## My Pick
 Personally, my pick for the best player is Larry Allen. He has only 4 fumble recoveries in over 200 games played, the most on the list, with some of the most impressive accolades out there. A Super Bowl champion, he made 11 Pro Bowls, 6 All-Pro teams, and both the 1990s and 2000s Hall of Fame all decade teams. The most impressive part to me is his versatility on the offensive line. He started his career at right tackle, before being moved to right guard. As a guard, he was given 2 first team All-Pro honors and selected to 3 consecutive Pro Bowls, despite splitting time between guard and left tackle in the third season due to injuries. The next season, he started at left tackle, protecting Troy Aikman's blindside. In this year, he received yet another first team All-Pro nod and Pro Bowl selection, becoming the first player to do so at 2 different offensive lineman positions. On top of that, the Dallas offensive line gave up just 19 sacks on 493 pass plays, anchored by Larry Allen on the blindside. After that year, he moved to left guard, where he stayed for the rest of his career, and continued to dominate. While my approach is unscientific and contains quite a few personal judgements, I declare Larry Allen to be the best NFL player to never carry the football. 
 
 If you took the time to read all this, thank you. Check back again soon to stay up to date on my recent blog posts.

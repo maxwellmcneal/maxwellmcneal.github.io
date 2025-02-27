@@ -1,13 +1,13 @@
 ---
 layout: default
-title: Home - maxwellmcneal
+title: Home - Maxwell McNeal
 ---
 <h1>Welcome</h1>
 <p>Welcome to my website! My name is Maxwell McNeal. I am an avid data scientist, specializing in web scraping, data visualization, and sports analytics. This website is a place for me to share my work with the world and show people what I'm up to. I'm also a proud UCLA graduate, go Bruins!</p>
 
 
 <h1>Most Recent Blog Post</h1>
-{% for post in site.posts %}
+<!-- {% for post in site.posts %}
     {% if forloop.first == true %}
         <article>
 			<h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
@@ -15,4 +15,32 @@ title: Home - maxwellmcneal
 			<p>{{ post.excerpt }} </p>
 		</article>
 	{% endif %}
-{% endfor %}
+{% endfor %} -->
+
+<div class="posts">
+	{% assign posts = site.posts %}
+	{% if paginator %}
+	  {% assign posts = paginator.posts %}
+	{% endif %}
+	{% for post in posts %}
+	  {% if forloop.first == true %}
+	  <div class="post">
+		<h2 class="post-title">
+		  <a href="{{ post.url | relative_url }}">
+			{{ post.title }}
+		  </a>
+		</h2>
+  
+		<time datetime="{{ post.date | date_to_xmlschema }}" class="post-meta">Published {{ post.date | date_to_string }}</time>
+  
+		<p class="post-excerpt">
+		  {% if post.description %}
+			{{ post.description | strip_html }}
+		  {% else %}
+			{{ post.excerpt | strip_html }}
+		  {% endif %}
+		</p>
+	  </div>
+	  {% endif %}
+	{% endfor %}
+  </div>

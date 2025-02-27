@@ -1,26 +1,90 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
-    <meta charset="utf-8">
-    <title>Who was the best NFL player without a possession?</title>
-    <link rel="stylesheet" href="/assets/css/styles.css">
-  </head>
-  <body>
-	<header>
-		<nav>
-  
-    <a href="/">Home</a>
-  
-    <a href="/about.html">About</a>
-  
-    <a href="/blog.html">Blog</a>
-  
-</nav>
-    </header>
-	<h1> Who was the best NFL player without a possession?</h1>
-<p> Published 07 February 2025 </p>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/assets/normalize.css">
+  <link rel="stylesheet" href="/assets/open-color.css">
+  <link rel="stylesheet" href="/assets/monophase/styles.css">
+  <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" />
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Who was the best NFL player without a possession?</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Who was the best NFL player without a possession?" />
+<meta name="author" content="Maxwell McNeal" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="The best football players with no football" />
+<meta property="og:description" content="The best football players with no football" />
+<link rel="canonical" href="http://localhost:4000/2025/02/07/NFL-Player-No-Possession.html" />
+<meta property="og:url" content="http://localhost:4000/2025/02/07/NFL-Player-No-Possession.html" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-02-07T00:00:00-08:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Who was the best NFL player without a possession?" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Maxwell McNeal"},"dateModified":"2025-02-07T00:00:00-08:00","datePublished":"2025-02-07T00:00:00-08:00","description":"The best football players with no football","headline":"Who was the best NFL player without a possession?","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2025/02/07/NFL-Player-No-Possession.html"},"url":"http://localhost:4000/2025/02/07/NFL-Player-No-Possession.html"}</script>
+<!-- End Jekyll SEO tag -->
 
-<p>On December 14th, 2024, Travis Hunter won the Heisman Trophy, the award for the best player in college football that year. On April 24th, at the 2025 NFL draft, we are going to hear his name get called, and watch the most dynamic two-way player since Deion Sanders, his college coach, get drafted. His skills on both sides of the ball make him an absolute outlier in modern football.</p>
+
+  <script async src="https://use.fontawesome.com/releases/v5.0.12/js/all.js"></script>
+  
+  
+
+</head>
+
+  <body>
+    <div class="container">
+      <header class="masthead">
+  <div class="masthead-title">
+    <a href="/" title="Home"></a>
+    <small class="tagline"></small>
+  </div>
+
+  
+  <center>
+    <nav class="nav">
+      <ul class="nav-list">
+      
+        <li class="nav-item">
+          <a href="/" class="">
+            Home
+          </a>
+        </li>
+      
+        <li class="nav-item">
+          <a href="/about.html" class="">
+            About
+          </a>
+        </li>
+      
+        <li class="nav-item">
+          <a href="/blog.html" class="">
+            Blog
+          </a>
+        </li>
+      
+      </ul>
+    </nav>
+  </center>
+  
+</header>
+
+
+      <main>
+        <article class="post">
+  <h1 class="post-title">Who was the best NFL player without a possession?</h1>
+  <div class="post-meta">
+    <time datetime="2025-02-07T00:00:00-08:00" itemprop="datePublished">
+      07 Feb 2025
+    </time><span> • </span>
+      
+        <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+          Maxwell McNeal
+        </span>
+    
+  </div>
+
+  <p>On December 14th, 2024, Travis Hunter won the Heisman Trophy, the award for the best player in college football that year. On April 24th, at the 2025 NFL draft, we are going to hear his name get called, and watch the most dynamic two-way player since Deion Sanders, his college coach, get drafted. His skills on both sides of the ball make him an absolute outlier in modern football.</p>
 
 <p>Most NFL players live on either offense or defense. But, it wasn’t always this way. The one-platoon system, where the same players played both offense and defense, was the standard in the NFL until 1943 due to rules requiring players to sit for the rest of the half or quarter if they came out of the game. With the implementation of unlimited substitutions in 1943, teams rapidly realized how beneficial it was to have specialized players for offense and defense.</p>
 
@@ -35,37 +99,37 @@
 <p>I will be using the dataset outlined in my <a href="https://www.maxwellmcneal.com/2025/01/29/PFR-Scraper.html">last post</a>. It contains the careers statistics of all NFL players in history, scraped from the Pro Football Reference website.</p>
 
 <p>First, I’m going to add some helper columns and combine regular and postseason games played and starts for easier viewing.</p>
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">player_stats</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">read_csv</span><span class="p">(</span><span class="sh">'</span><span class="s">player_stats.csv</span><span class="sh">'</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">player_stats</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">'player_stats.csv'</span><span class="p">)</span>
 
-<span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">career_length</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">career_end</span><span class="sh">'</span><span class="p">]</span> <span class="o">-</span> <span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">career_begin</span><span class="sh">'</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
-<span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">games</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">games_reg</span><span class="sh">'</span><span class="p">]</span> <span class="o">+</span> <span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">games_post</span><span class="sh">'</span><span class="p">]</span>
-<span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">games_started</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">games_started_reg</span><span class="sh">'</span><span class="p">]</span> <span class="o">+</span> <span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">games_started_post</span><span class="sh">'</span><span class="p">]</span>
-<span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">start_pct</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">games_started</span><span class="sh">'</span><span class="p">]</span> <span class="o">/</span> <span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">games</span><span class="sh">'</span><span class="p">]</span>
+<span class="n">player_stats</span><span class="p">[</span><span class="s">'career_length'</span><span class="p">]</span> <span class="o">=</span> <span class="n">player_stats</span><span class="p">[</span><span class="s">'career_end'</span><span class="p">]</span> <span class="o">-</span> <span class="n">player_stats</span><span class="p">[</span><span class="s">'career_begin'</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">player_stats</span><span class="p">[</span><span class="s">'games'</span><span class="p">]</span> <span class="o">=</span> <span class="n">player_stats</span><span class="p">[</span><span class="s">'games_reg'</span><span class="p">]</span> <span class="o">+</span> <span class="n">player_stats</span><span class="p">[</span><span class="s">'games_post'</span><span class="p">]</span>
+<span class="n">player_stats</span><span class="p">[</span><span class="s">'games_started'</span><span class="p">]</span> <span class="o">=</span> <span class="n">player_stats</span><span class="p">[</span><span class="s">'games_started_reg'</span><span class="p">]</span> <span class="o">+</span> <span class="n">player_stats</span><span class="p">[</span><span class="s">'games_started_post'</span><span class="p">]</span>
+<span class="n">player_stats</span><span class="p">[</span><span class="s">'start_pct'</span><span class="p">]</span> <span class="o">=</span> <span class="n">player_stats</span><span class="p">[</span><span class="s">'games_started'</span><span class="p">]</span> <span class="o">/</span> <span class="n">player_stats</span><span class="p">[</span><span class="s">'games'</span><span class="p">]</span>
 </code></pre></div></div>
 <p>I want to cut all players with any possessions, meaning pass attempts, rush attempts, receptions, kick returns, or punt returns, as well as any interceptions or fumbles recovered, in either the regular season or postseason.</p>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">players</span> <span class="o">=</span> <span class="n">player_stats</span><span class="p">[</span>
-    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">position</span><span class="sh">'</span><span class="p">]</span> <span class="o">!=</span> <span class="sh">'</span><span class="s">K</span><span class="sh">'</span><span class="p">)</span> <span class="o">&amp;</span>
-    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">position</span><span class="sh">'</span><span class="p">]</span> <span class="o">!=</span> <span class="sh">'</span><span class="s">P</span><span class="sh">'</span><span class="p">)</span> <span class="o">&amp;</span>
-    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">pass_att_reg</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
-    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">pass_att_post</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
-    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">rush_att_reg</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
-    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">rush_att_post</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
-    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">rec_reg</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
-    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">rec_post</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
-    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">def_int_reg</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
-    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">def_int_post</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
-    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">fumbles_rec_reg</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
-    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">fumbles_rec_post</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
-    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">punt_ret_reg</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
-    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">punt_ret_post</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
-    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">kick_ret_reg</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
-    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">kick_ret_post</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="s">'position'</span><span class="p">]</span> <span class="o">!=</span> <span class="s">'K'</span><span class="p">)</span> <span class="o">&amp;</span>
+    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="s">'position'</span><span class="p">]</span> <span class="o">!=</span> <span class="s">'P'</span><span class="p">)</span> <span class="o">&amp;</span>
+    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="s">'pass_att_reg'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
+    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="s">'pass_att_post'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
+    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="s">'rush_att_reg'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
+    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="s">'rush_att_post'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
+    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="s">'rec_reg'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
+    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="s">'rec_post'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
+    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="s">'def_int_reg'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
+    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="s">'def_int_post'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
+    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="s">'fumbles_rec_reg'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
+    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="s">'fumbles_rec_post'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
+    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="s">'punt_ret_reg'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
+    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="s">'punt_ret_post'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
+    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="s">'kick_ret_reg'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
+    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="s">'kick_ret_post'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
 <span class="p">]</span>
 </code></pre></div></div>
 <p>Finally, I want to sort the resulting players by total games played and display the relevant columns for the top 10 players.</p>
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">players</span> <span class="o">=</span> <span class="n">players</span><span class="p">.</span><span class="nf">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="sh">'</span><span class="s">games</span><span class="sh">'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
-<span class="n">players_display</span> <span class="o">=</span> <span class="n">players</span><span class="p">[[</span><span class="sh">'</span><span class="s">name</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">position</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">career_length</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">games</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">games_started</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">start_pct</span><span class="sh">'</span><span class="p">]]</span>
-<span class="n">players_display</span><span class="p">.</span><span class="nf">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">players</span> <span class="o">=</span> <span class="n">players</span><span class="p">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s">'games'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">players_display</span> <span class="o">=</span> <span class="n">players</span><span class="p">[[</span><span class="s">'name'</span><span class="p">,</span> <span class="s">'position'</span><span class="p">,</span> <span class="s">'career_length'</span><span class="p">,</span> <span class="s">'games'</span><span class="p">,</span> <span class="s">'games_started'</span><span class="p">,</span> <span class="s">'start_pct'</span><span class="p">]]</span>
+<span class="n">players_display</span><span class="p">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </code></pre></div></div>
 
 <table>
@@ -185,34 +249,34 @@
 <h2 id="reconsidering">Reconsidering</h2>
 <p>What if I revise my original question? I thought I was going to find some of the best linemen across NFL history, not players from the 1920s and an average defensive starter. Now that I’ve seen just how strict my requirements were before, I want to see what kinds of players I get if loosen the standards to see if I can satisfyingly answer this odd question about football players with no football. I think the “no fumble recoveries” requirement is what’s eliminating many of the great linemen, both offensive and defensive. Fumble recoveries are not exactly a skill, they’re more of a “right place, right time” thing. And the more snaps you’re on the field for, the more fumbles you’ll witness, and the more chances you have to dive on a loose ball at least once in your career. I need to bend the rules here to allow for players to have recovered some fumbles. But, I still want to make sure these players don’t have any fumble returns, and definitely no scoop and scores. I’m going to rerun this list, but change the no fumble recoveries to no fumble recovery yards. To eliminate all the long snappers, I’m going to also set a requirement that a player’s percentage of games started is greater than 50%. Lastly, I’m going to add the requirement of no fumbles, given that we established that a player who fumbles must necessarily have had posession earlier.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">position_list</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">position</span><span class="sh">'</span><span class="p">].</span><span class="nb">str</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="sh">'</span><span class="s">-</span><span class="sh">'</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">player_stats</span><span class="p">[</span><span class="s">'position_list'</span><span class="p">]</span> <span class="o">=</span> <span class="n">player_stats</span><span class="p">[</span><span class="s">'position'</span><span class="p">].</span><span class="nb">str</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">'-'</span><span class="p">)</span>
 
 <span class="n">players</span> <span class="o">=</span> <span class="n">player_stats</span><span class="p">[</span>
-    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">position</span><span class="sh">'</span><span class="p">]</span> <span class="o">!=</span> <span class="sh">'</span><span class="s">K</span><span class="sh">'</span><span class="p">)</span> <span class="o">&amp;</span>
-    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">position</span><span class="sh">'</span><span class="p">]</span> <span class="o">!=</span> <span class="sh">'</span><span class="s">P</span><span class="sh">'</span><span class="p">)</span> <span class="o">&amp;</span>
-    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">pass_att_reg</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
-    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">pass_att_post</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
-    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">rush_att_reg</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
-    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">rush_att_post</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
-    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">rec_reg</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
-    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">rec_post</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
-    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">def_int_reg</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
-    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">def_int_post</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
-    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">fumbles_reg</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
-    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">fumbles_post</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
-    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">fumbles_rec_yds_reg</span><span class="sh">'</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
-    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">fumbles_rec_yds_post</span><span class="sh">'</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
-    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">punt_ret_reg</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
-    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">punt_ret_post</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
-    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">kick_ret_reg</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
-    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">kick_ret_post</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> 
-    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="sh">'</span><span class="s">start_pct</span><span class="sh">'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="s">'position'</span><span class="p">]</span> <span class="o">!=</span> <span class="s">'K'</span><span class="p">)</span> <span class="o">&amp;</span>
+    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="s">'position'</span><span class="p">]</span> <span class="o">!=</span> <span class="s">'P'</span><span class="p">)</span> <span class="o">&amp;</span>
+    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="s">'pass_att_reg'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
+    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="s">'pass_att_post'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
+    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="s">'rush_att_reg'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
+    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="s">'rush_att_post'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
+    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="s">'rec_reg'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
+    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="s">'rec_post'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
+    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="s">'def_int_reg'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
+    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="s">'def_int_post'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
+    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="s">'fumbles_reg'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
+    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="s">'fumbles_post'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
+    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="s">'fumbles_rec_yds_reg'</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
+    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="s">'fumbles_rec_yds_post'</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
+    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="s">'punt_ret_reg'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
+    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="s">'punt_ret_post'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
+    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="s">'kick_ret_reg'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>
+    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="s">'kick_ret_post'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> 
+    <span class="p">(</span><span class="n">player_stats</span><span class="p">[</span><span class="s">'start_pct'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">)</span>
 <span class="p">]</span>
-<span class="n">players</span> <span class="o">=</span> <span class="n">players</span><span class="p">[</span><span class="n">players</span><span class="p">[</span><span class="sh">'</span><span class="s">position_list</span><span class="sh">'</span><span class="p">].</span><span class="nf">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="sh">'</span><span class="s">C</span><span class="sh">'</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">x</span><span class="p">)]</span>
+<span class="n">players</span> <span class="o">=</span> <span class="n">players</span><span class="p">[</span><span class="n">players</span><span class="p">[</span><span class="s">'position_list'</span><span class="p">].</span><span class="nb">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s">'C'</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">x</span><span class="p">)]</span>
 
-<span class="n">players</span> <span class="o">=</span> <span class="n">players</span><span class="p">.</span><span class="nf">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="sh">'</span><span class="s">games</span><span class="sh">'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
-<span class="n">players_display</span> <span class="o">=</span> <span class="n">players</span><span class="p">[[</span><span class="sh">'</span><span class="s">name</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">position</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">career_length</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">games</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">games_started</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">start_pct</span><span class="sh">'</span><span class="p">]]</span>
-<span class="n">players_display</span><span class="p">.</span><span class="nf">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">players</span> <span class="o">=</span> <span class="n">players</span><span class="p">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s">'games'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">players_display</span> <span class="o">=</span> <span class="n">players</span><span class="p">[[</span><span class="s">'name'</span><span class="p">,</span> <span class="s">'position'</span><span class="p">,</span> <span class="s">'career_length'</span><span class="p">,</span> <span class="s">'games'</span><span class="p">,</span> <span class="s">'games_started'</span><span class="p">,</span> <span class="s">'start_pct'</span><span class="p">]]</span>
+<span class="n">players_display</span><span class="p">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </code></pre></div></div>
 
 <table>
@@ -2495,6 +2559,7 @@
 
 <p>From here, selecting the best player gets hazy. Staying true to the original question, Walter Jones has the fewest fumble recoveries on this entire list. So he may be the best answer if you value minimizing total posessions. Dan Hampton and Joe Klecko are the only two defensive players from the modern era of the NFL. Hampton edges out Klecko in sacks, at 82.5 versus 78, but Klecko transistioned to a nose tackle at the end of his career, trading sacks numbers for impactful run stopping.</p>
 
+<h2 id="my-pick">My Pick</h2>
 <p>Personally, my pick for the best player is Larry Allen. He has only 4 fumble recoveries in over 200 games played, the most on the list, with some of the most impressive accolades out there. A Super Bowl champion, he made 11 Pro Bowls, 6 All-Pro teams, and both the 1990s and 2000s Hall of Fame all decade teams. The most impressive part to me is his versatility on the offensive line. He started his career at right tackle, before being moved to right guard. As a guard, he was given 2 first team All-Pro honors and selected to 3 consecutive Pro Bowls, despite splitting time between guard and left tackle in the third season due to injuries. The next season, he started at left tackle, protecting Troy Aikman’s blindside. In this year, he received yet another first team All-Pro nod and Pro Bowl selection, becoming the first player to do so at 2 different offensive lineman positions. On top of that, the Dallas offensive line gave up just 19 sacks on 493 pass plays, anchored by Larry Allen on the blindside. After that year, he moved to left guard, where he stayed for the rest of his career, and continued to dominate. While my approach is unscientific and contains quite a few personal judgements, I declare Larry Allen to be the best NFL player to never carry the football.</p>
 
 <p>If you took the time to read all this, thank you. Check back again soon to stay up to date on my recent blog posts.</p>
@@ -2510,5 +2575,80 @@
   </ol>
 </div>
 
+
+  
+</article>
+
+
+  <aside class="related">
+    <h2 class="related-title">Related posts</h2>
+    <ul class="related-posts">
+      
+        <li>
+          <a href="/2025/02/20/NBA-Salary-Cap-Visualizations.html">
+            NBA Salary Cap Visualizations
+          </a>
+          <small><time datetime="2025-02-20T00:00:00-08:00">20 Feb 2025</time></small>
+        </li>
+      
+        <li>
+          <a href="/2025/01/29/PFR-Scraper.html">
+            Scraping Pro Football Reference
+          </a>
+          <small><time datetime="2025-01-29T00:00:00-08:00">29 Jan 2025</time></small>
+        </li>
+      
+    </ul>
+  </aside>
+
+
+      </main>
+
+      <footer class="footer">
+  <div class="footer-column">
+    <p>
+      <small>
+        &copy;&nbsp;<time datetime="2025-02-26T19:44:39-08:00">2025</time><a href="" target="_blank">
+            
+              Maxwell McNeal
+            
+          </a>- All right reserved.
+      </small>
+    </p>
+    <p>
+      <small>
+        Powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> & <a href="https://github.com/zivhub/monophase" target="_blank">Monophase</a>
+      </small>
+    </p>
+  </div>
+
+  
+    <div class="footer-column">
+      <ul class="social-icons">
+        
+          <li class="social-icon-item">
+            <a class="social-icon" href="mailto:mcnealmaxwell@gmail.com" target="_blank">
+              <i class="fas fa-envelope" title="Email"></i>
+              Email
+            </a>
+          </li>
+        
+          <li class="social-icon-item">
+            <a class="social-icon" href="https://github.com/maxwellmcneal" target="_blank">
+              <i class="fab fa-github" title="GitHub"></i>
+              GitHub
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  
+</footer>
+
+    </div>
+
+    
+
+    
   </body>
 </html>
