@@ -178,13 +178,13 @@ min 0.000000
 max 340.000000 
 Name: games_reg, dtype: float64
 ```
-![Image](/assets/images/plot_1.png)
+![Image](/assets/images/2025-01-29/plot_1.png)
 
 The summary statistics show the mean number of regular season games played is 46.97, but the standard deviation, at 57.33, is huge relative to the mean, due to the large right skew seen in the histogram. The median of 22 is a better measure of central tendency when looking at the histogram. The histogram also illustrates that most quarterbacks appear in 10 regular season games or fewer, and as the number of career games increases, there are fewer and fewer QBs whose career spanned that many regular season games. This difference in games played causes most charts of counting statistics to look similar to the above chart, with a large bar in the start then a shrinking tail skewed right. More games means more opportunity to rack up numbers. For instance, let's look at the histogram of career regular season passing yards.
 ```python
 sns.histplot(qb_stats, x='pass_yds_reg', binwidth=1000).set(title='QB Career Regular Season Passing Yards')
 ```
-![Image](/assets/images/plot_2.png)
+![Image](/assets/images/2025-01-29/plot_2.png)
 
 Due to the correlation between regular season games played and passing yards, the same trend appears in the chart, only even more exaggerated. Of the 1087 quarterbacks we started with, the chart shows that over 500 of them, or about half, never eclipse 1000 career regular season passing yards. While it's hard to play a lot of games in the league as a quarterback, it seems to be even harder to rack up many thousands of passing yards. We can calculate the numerical correlation between career length and regular season passing yards, then use a scatterplot to visualize the relationship between both variables.
 ```python
@@ -194,20 +194,20 @@ sns.scatterplot(qb_stats, x='games_reg', y='pass_yds_reg')
 # Code Output
 0.8869475559344511
 ```
-![Image](/assets/images/plot_3.png)
+![Image](/assets/images/2025-01-29/plot_3.png)
 
 These variables are strongly correlated, with an r value of about 0.88, and the scatterplot visually confirms this.
 However, this same trend doesn't appear in histograms for statistics that are rates, such as completion percentage. Below is the corresponding histogram for regular season completion percentage.
 ```python
 sns.histplot(qb_stats, x='pass_cmp_pct_reg').set(title='QB Career Regular Season Completion Percentage')
 ```
-![Image](/assets/images/plot_4.png)
+![Image](/assets/images/2025-01-29/plot_4.png)
 
 Here see something much closer to a normal curve, with some outliers at both 0 and 100 percent for QBs that have very few passing attempts. Let's see how different the chart looks if we institue a minimum number of passing attempts to appear on the chart. This is a common way to remove outliers in sports statistics. Pro Football Reference uses a minimum number of 1500 passing attempts to determine career leaders in passing completion, so I will use that as the cutoff.
 ```python
 sns.histplot(qb_stats[qb_stats['pass_att_reg'] >= 1500], x='pass_cmp_pct_reg', binwidth=1).set(title='QB Regular Season Completion Percentage (min. 1500 attempts)')
 ```
-![Image](/assets/images/plot_5.png)
+![Image](/assets/images/2025-01-29/plot_5.png)
 
 This step completely removes the outliers and shows a more representative picture of quarterback completion percentages.
 ## Conclusion
