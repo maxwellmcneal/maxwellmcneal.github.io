@@ -160,10 +160,25 @@ Click the dropdown menu below for easy navigation to any individual team.
 <br>
 {% include plots/2025-02-20/donut_plot_NYK.html %}
 
+### Oklahoma City Thunder
+{% include plots/2025-02-20/bar_plot_OKC.html %}
+<br>
+{% include plots/2025-02-20/donut_plot_OKC.html %}
+
 ### Orlando Magic
 {% include plots/2025-02-20/bar_plot_ORL.html %}
 <br>
 {% include plots/2025-02-20/donut_plot_ORL.html %}
+
+### Philadelphia 76ers
+{% include plots/2025-02-20/bar_plot_PHI.html %}
+<br>
+{% include plots/2025-02-20/donut_plot_PHI.html %}
+
+### Phoenix Suns
+{% include plots/2025-02-20/bar_plot_PHX.html %}
+<br>
+{% include plots/2025-02-20/donut_plot_PHX.html %}
 
 ### Portland Trail Blazers
 {% include plots/2025-02-20/bar_plot_POR.html %}
@@ -174,6 +189,11 @@ Click the dropdown menu below for easy navigation to any individual team.
 {% include plots/2025-02-20/bar_plot_SAC.html %}
 <br>
 {% include plots/2025-02-20/donut_plot_SAC.html %}
+
+### San Antonio Spurs
+{% include plots/2025-02-20/bar_plot_SAS.html %}
+<br>
+{% include plots/2025-02-20/donut_plot_SAS.html %}
 
 ### Toronto Raptors
 {% include plots/2025-02-20/bar_plot_TOR.html %}
