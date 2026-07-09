@@ -1,0 +1,12 @@
+---
+import { SITE_TITLE, GITHUB_URL } from '../consts';
+const today = new Date();
+---
+
+<footer class="border-t border-border">
+	<div
+		class="mx-auto flex max-w-5xl flex-col items-center justify-between gap-2 px-4 py-8 text-sm text-muted sm:flex-row sm:px-6"
+	>
+		<p>&copy; {today.getFullYear()} {SITE_TITLE}. All rights reserved.</p>
+	</div>
+</footer>

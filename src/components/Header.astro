@@ -1,0 +1,76 @@
+---
+import { SITE_TITLE, GITHUB_URL } from '../consts';
+import HeaderLink from './HeaderLink.astro';
+import ThemeToggle from './ThemeToggle.astro';
+import GithubIcon from '../assets/icons/mark-github-16.svg';
+import MenuIcon from '../assets/icons/menu.svg';
+---
+
+<header class="sticky top-0 z-40 border-b border-border bg-bg/80 backdrop-blur">
+	<nav class="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 sm:px-6">
+		<a href="/" class="text-lg font-bold tracking-tight text-fg hover:text-accent">
+			{SITE_TITLE}
+		</a>
+
+		<!-- Desktop nav -->
+		<div class="hidden items-center gap-6 sm:flex">
+			<HeaderLink href="/">Home</HeaderLink>
+			<HeaderLink href="/about">About Me</HeaderLink>
+			<HeaderLink href="/blog">Blog</HeaderLink>
+			<HeaderLink href="/running">Running</HeaderLink>
+			<a
+				href={GITHUB_URL}
+				target="_blank"
+				rel="noopener noreferrer"
+				aria-label="GitHub"
+				class="grid size-9 place-items-center rounded-md text-fg transition-colors hover:bg-surface hover:text-accent"
+			>
+				<GithubIcon class="size-5" fill="currentColor" aria-hidden="true" />
+			</a>
+			<ThemeToggle />
+		</div>
+
+		<!-- Mobile controls: toggle always visible + menu icon -->
+		<div class="flex items-center gap-1 sm:hidden">
+			<ThemeToggle />
+			<button
+				id="menu-toggle"
+				type="button"
+				aria-label="Open menu"
+				aria-expanded="false"
+				aria-controls="mobile-menu"
+				class="grid size-9 place-items-center rounded-md text-fg transition-colors hover:bg-surface"
+			>
+				<MenuIcon class="size-6", fill="currentColor" aria-hidden="true"/>
+			</button>
+		</div>
+	</nav>
+
+	<!-- Mobile dropdown menu -->
+	<div id="mobile-menu" class="hidden border-t border-border sm:hidden">
+		<div class="mx-auto flex max-w-5xl flex-col gap-1 px-4 py-3">
+			<HeaderLink href="/" class="py-2">Home</HeaderLink>
+			<HeaderLink href="/about" class="py-2">About Me</HeaderLink>
+			<HeaderLink href="/blog" class="py-2">Blog</HeaderLink>
+			<HeaderLink href="/running" class="py-2">Running</HeaderLink>
+			<a
+				href={GITHUB_URL}
+				target="_blank"
+				rel="noopener noreferrer"
+				class="py-2 font-medium text-fg transition-colors hover:text-accent"
+			>
+				GitHub
+			</a>
+		</div>
+	</div>
+</header>
+
+<script>
+	const btn = document.getElementById('menu-toggle');
+	const menu = document.getElementById('mobile-menu');
+	btn?.addEventListener('click', () => {
+		const open = menu?.classList.toggle('hidden') === false;
+		btn.setAttribute('aria-expanded', String(open));
+		btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+	});
+</script>

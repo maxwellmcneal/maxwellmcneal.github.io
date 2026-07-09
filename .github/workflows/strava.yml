@@ -1,0 +1,65 @@
+name: Strava sync
+
+on:
+  schedule:
+    # 08:00 UTC = midnight PST / 01:00 PDT — early in the new Pacific day.
+    # GitHub cron is UTC and ignores DST, so this drifts by an hour seasonally
+    # but always fires after Pacific midnight, which is what the streak needs.
+    - cron: "0 8 * * *"
+  workflow_dispatch:        # allow manual runs from the Actions tab
+
+# Prevent overlapping runs — both could read the old refresh token and one
+# write would clobber the other (the concurrency caveat for rotating tokens).
+concurrency:
+  group: strava-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Check out with the PAT (not the default GITHUB_TOKEN) so the stats
+          # commit pushed below re-triggers the Pages deploy workflow. Pushes
+          # authenticated with GITHUB_TOKEN deliberately do NOT trigger other
+          # workflows, which would otherwise leave the live site stale.
+          token: ${{ secrets.GH_PAT }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install -r requirements.txt
+
+      - run: python scripts/strava.py
+        env:
+          # Strava credentials + current tokens (the script rotates these two).
+          STRAVA_CLIENT_ID: ${{ secrets.STRAVA_CLIENT_ID }}
+          STRAVA_CLIENT_SECRET: ${{ secrets.STRAVA_CLIENT_SECRET }}
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
+          # Fine-grained PAT needing two repo permissions:
+          #   - "Secrets: Read and write" so the script rotates the
+          #     ACCESS_TOKEN / REFRESH_TOKEN secrets after a refresh
+          #     (the default GITHUB_TOKEN cannot write secrets).
+          #   - "Contents: Read and write" so the checkout above can push
+          #     the stats commit and re-trigger the deploy workflow.
+          GH_PAT: ${{ secrets.GH_PAT }}
+          # GITHUB_REPOSITORY and GITHUB_ACTIONS are provided automatically.
+
+      # Commit the refreshed stats back to main. running.astro imports this
+      # JSON at build time, so the site only shows new numbers once the file
+      # is committed and the deploy workflow rebuilds. Commit only when the
+      # file actually changed to avoid empty commits / needless deploys.
+      - name: Commit updated running stats
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -- src/data/strava_stats.json; then
+            echo "No change in running stats; skipping commit."
+          else
+            git add src/data/strava_stats.json
+            git commit -m "chore: update Strava running stats"
+            git push
+          fi

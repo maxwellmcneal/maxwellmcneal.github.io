@@ -1,0 +1,75 @@
+---
+import ChevronDownIcon from '../assets/icons/chevron-down.svg'
+// Tag filter. On desktop it's a sticky sidebar; on mobile it collapses
+// behind a "Filter by tag" button.
+interface Props {
+	tags: string[];
+	activeTag?: string;
+}
+const { tags, activeTag } = Astro.props;
+---
+
+<aside class="md:w-44 md:shrink-0">
+	<!-- Mobile toggle -->
+	<button
+		id="tag-filter-toggle"
+		type="button"
+		aria-expanded="false"
+		aria-controls="tag-filter-list"
+		class="flex w-full items-center justify-between rounded-md border border-border px-4 py-2 font-medium text-fg transition-colors hover:border-accent md:hidden"
+	>
+		<span>Filter by tag</span>
+		<ChevronDownIcon id="tag-filter-chevron" aria-hidden="true"/>
+	</button>
+
+	<nav
+		id="tag-filter-list"
+		aria-label="Filter posts by tag"
+		class="mt-3 hidden md:mt-0 md:block md:sticky md:top-20"
+	>
+		<h2 class="mb-3 hidden text-sm font-semibold uppercase tracking-wider text-muted md:block">
+			Tags
+		</h2>
+		<ul class="flex flex-col gap-1">
+			<li>
+				<a
+					href="/blog"
+					class:list={[
+						'block rounded-md px-3 py-1.5 text-sm transition-colors',
+						!activeTag ? 'bg-surface font-semibold text-accent' : 'text-muted hover:text-accent',
+					]}
+				>
+					All posts
+				</a>
+			</li>
+			{
+				tags.map((tag) => (
+					<li>
+						<a
+							href={`/tags/${tag}/`}
+							class:list={[
+								'block rounded-md px-3 py-1.5 text-sm transition-colors',
+								tag === activeTag
+									? 'bg-surface font-semibold text-accent'
+									: 'text-muted hover:text-accent',
+							]}
+						>
+							{tag}
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</nav>
+</aside>
+
+<script>
+	const toggle = document.getElementById('tag-filter-toggle');
+	const list = document.getElementById('tag-filter-list');
+	const chevron = document.getElementById('tag-filter-chevron');
+	toggle?.addEventListener('click', () => {
+		const open = list?.classList.toggle('hidden') === false;
+		toggle.setAttribute('aria-expanded', String(open));
+		chevron?.classList.toggle('rotate-180', open);
+	});
+</script>

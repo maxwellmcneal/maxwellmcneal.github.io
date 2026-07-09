@@ -1,0 +1,37 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import FormattedDate from './FormattedDate.astro';
+import Tag from './Tag.astro';
+
+interface Props {
+	posts: CollectionEntry<'blog'>[];
+}
+const { posts } = Astro.props;
+---
+
+<ul class="flex flex-col gap-6">
+	{
+		posts.map((post) => (
+			<li>
+				<article class="flex flex-col gap-2 rounded-2xl border border-border bg-surface p-6">
+					<h2 class="text-2xl font-bold leading-snug">
+						<a href={`/blog/${post.id}/`} class="text-fg transition-colors hover:text-accent">
+							{post.data.title}
+						</a>
+					</h2>
+					<p class="text-sm text-muted">
+						<FormattedDate date={post.data.pubDate} />
+					</p>
+					<p class="text-muted">{post.data.description}</p>
+					{post.data.tags.length > 0 && (
+						<div class="mt-1 flex flex-wrap gap-2">
+							{post.data.tags.map((tag) => (
+								<Tag tag={tag} />
+							))}
+						</div>
+					)}
+				</article>
+			</li>
+		))
+	}
+</ul>

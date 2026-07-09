@@ -1,0 +1,155 @@
+@import 'tailwindcss';
+
+/* Enable class-based dark mode: `dark:` utilities apply when a `.dark`
+   class is present on (or above) the element. The toggle in the header
+   adds/removes `.dark` on <html>. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---- Design tokens -------------------------------------------------------
+   Raw values live on :root / .dark and flip with the theme. They are mapped
+   into Tailwind color/font names via @theme inline below, so utilities like
+   `bg-bg`, `text-fg`, `text-muted`, `border-border`, `text-accent` all react
+   to dark mode automatically. */
+:root {
+	--bg: #fafaf9; /* stone-50 */
+	--surface: #f5f5f4; /* stone-100 */
+	--fg: #1c1917; /* stone-900 */
+	--muted: #78716c; /* stone-500 */
+	--border: #e7e5e4; /* stone-200 */
+	--accent: #166534; /* deep forest green */
+	--accent-2: #4d9a4d; /* lighter forest green */
+}
+
+.dark {
+	--bg: #1c1917; /* stone-900 */
+	--surface: #292524; /* stone-800 */
+	--fg: #f5f5f4; /* stone-100 */
+	--muted: #a8a29e; /* stone-400 */
+	--border: #3a342f; /* warm border */
+	--accent: #16a34a; /* forest green (green-600) */
+	--accent-2: #6cc24a; /* lighter forest green */
+}
+
+@theme inline {
+	--color-bg: var(--bg);
+	--color-surface: var(--surface);
+	--color-fg: var(--fg);
+	--color-muted: var(--muted);
+	--color-border: var(--border);
+	--color-accent: var(--accent);
+	--color-accent-2: var(--accent-2);
+
+	--font-sans: var(--font-atkinson), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ---- Base ---------------------------------------------------------------- */
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	background-color: var(--bg);
+	color: var(--fg);
+	font-family: var(--font-sans);
+	-webkit-font-smoothing: antialiased;
+	transition:
+		background-color 0.2s ease,
+		color 0.2s ease;
+}
+
+/* ---- Prose (rendered markdown) ------------------------------------------- */
+.prose {
+	color: var(--fg);
+	line-height: 1.75;
+	font-size: 1.075rem;
+}
+.prose > * + * {
+	margin-top: 1.25em;
+}
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+	color: var(--fg);
+	font-weight: 700;
+	line-height: 1.2;
+	margin-top: 2em;
+	margin-bottom: 0.5em;
+}
+.prose h1 {
+	font-size: 2.25rem;
+}
+.prose h2 {
+	font-size: 1.75rem;
+}
+.prose h3 {
+	font-size: 1.35rem;
+}
+.prose a {
+	color: var(--accent);
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+.prose a:hover {
+	text-decoration-thickness: 2px;
+}
+.prose strong {
+	color: var(--fg);
+	font-weight: 700;
+}
+.prose ul,
+.prose ol {
+	padding-left: 1.5em;
+}
+.prose ul {
+	list-style: disc;
+}
+.prose ol {
+	list-style: decimal;
+}
+.prose li + li {
+	margin-top: 0.4em;
+}
+.prose blockquote {
+	border-left: 3px solid var(--accent);
+	padding-left: 1em;
+	color: var(--muted);
+	font-style: italic;
+}
+.prose code {
+	background-color: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: 0.3rem;
+	padding: 0.1em 0.35em;
+	font-size: 0.9em;
+}
+.prose pre {
+	background-color: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: 0.6rem;
+	padding: 1.1em 1.3em;
+	overflow-x: auto;
+}
+.prose pre code {
+	background: none;
+	border: none;
+	padding: 0;
+	font-size: 0.9em;
+}
+.prose img {
+	border-radius: 0.6rem;
+}
+.prose hr {
+	border: none;
+	border-top: 1px solid var(--border);
+	margin: 2.5em 0;
+}
+.prose table {
+	width: 100%;
+	border-collapse: collapse;
+}
+.prose th,
+.prose td {
+	border: 1px solid var(--border);
+	padding: 0.5em 0.75em;
+}

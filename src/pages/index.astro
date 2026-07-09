@@ -1,0 +1,71 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostList from '../components/PostList.astro';
+
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const latest = posts.slice(0, 1);
+
+// Cards linking to the main sections of the site. Add an entry here to grow
+// the grid — the layout reflows automatically. (Writing is intentionally left
+// out; the "Latest post" section below already links to all posts.)
+const cards = [
+	{
+		href: '/about',
+		title: 'About Me',
+		description: 'Who I am, what I do, and how to get in touch.',
+	},
+	{
+		href: '/running',
+		title: 'Running',
+		description: 'My daily run streak and weekly mileage, pulled from Strava.',
+	},
+];
+---
+
+<BaseLayout>
+	<section class="mx-auto max-w-3xl px-4 pb-3 pt-10 sm:px-6 sm:pt-12">
+		<h1 class="text-4xl font-bold tracking-tight sm:text-5xl">
+			Welcome to my <span class="text-accent">website!</span>
+		</h1>
+		<p class="mt-5 text-lg text-muted">
+			Thanks for stopping by. Take a look at the featured pages or see my latest blog post below.
+		</p>
+
+		<nav class="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2" aria-label="Site sections">
+			{
+				cards.map((card) => (
+					<a
+						href={card.href}
+						class="group rounded-2xl border border-border bg-surface p-6 transition-colors hover:border-accent"
+					>
+						<h2 class="text-lg font-bold text-fg transition-colors group-hover:text-accent">
+							{card.title}
+						</h2>
+						<p class="mt-1.5 text-sm text-muted">{card.description}</p>
+					</a>
+				))
+			}
+		</nav>
+	</section>
+
+	<section class="mx-auto max-w-3xl px-4 py-8 sm:px-6">
+		<div class="mb-6 flex items-baseline justify-between border-t border-border pt-8">
+			<h2 class="text-m font-semibold uppercase tracking-wider text-muted">Latest post</h2>
+			<a href="/blog" class="text-sm font-medium text-accent hover:underline">
+				View all posts &rarr;
+			</a>
+		</div>
+		{
+			latest.length > 0 ? (
+				<PostList posts={latest} />
+			) : (
+				<div class="rounded-2xl border border-dashed border-border bg-surface p-8 text-center">
+					<p class="text-muted">No posts yet</p>
+				</div>
+			)
+		}
+	</section>
+</BaseLayout>

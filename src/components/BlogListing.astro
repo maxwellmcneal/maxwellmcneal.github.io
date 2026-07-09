@@ -1,0 +1,39 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import PostList from './PostList.astro';
+import TagSidebar from './TagSidebar.astro';
+import Squiggle from './Squiggle.astro';
+
+interface Props {
+	posts: CollectionEntry<'blog'>[];
+	allTags: string[];
+	activeTag?: string;
+	heading: string;
+	subheading?: string;
+}
+const { posts, allTags, activeTag, heading, subheading } = Astro.props;
+---
+
+<div class="mx-auto max-w-5xl px-4 py-10 sm:px-6">
+	<header class="mb-6">
+		<h1 class="text-3xl font-bold tracking-tight sm:text-4xl">{heading}</h1>
+		{subheading && <p class="mt-2 text-muted">{subheading}</p>}
+	</header>
+
+	<div class="mb-8">
+		<Squiggle />
+	</div>
+
+	<div class="flex flex-col gap-8 md:flex-row md:gap-12">
+		<TagSidebar tags={allTags} activeTag={activeTag} />
+		<div class="min-w-0 flex-1">
+			{
+				posts.length > 0 ? (
+					<PostList posts={posts} />
+				) : (
+					<p class="text-muted">No posts found.</p>
+				)
+			}
+		</div>
+	</div>
+</div>

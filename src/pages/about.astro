@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Squiggle from '../components/Squiggle.astro';
+import { SITE_TITLE } from '../consts';
+---
+
+<BaseLayout title={`About Me | ${SITE_TITLE}`} description="A little about me.">
+	<div class="mx-auto max-w-3xl px-4 py-12 sm:px-6">
+		<h1 class="mb-6 text-3xl font-bold tracking-tight sm:text-4xl">
+			About Me
+		</h1>
+		<div class="mb-8">
+			<Squiggle />
+		</div>
+		<div class="prose">
+			<p>
+				Hey there, my name is Maxwell McNeal. This site primarily serves as a blog
+				for when I have both interesting ideas and free time, but I plan on experimenting with more
+				interactive features on the site in the near future.
+			</p>
+			<p>
+				I am based in Los Angeles and currently work as a data analyst for a software company in the aviation industry.
+				Before that, I worked as a freelance consultant tackling data science questions for small businesses.
+				I have a degree in Statistics and Data Science from UCLA, and I have been a lifelong fan of the Bruins.
+			</p>
+			<p>
+				If you want to get in contact with me to discuss one of my blog posts,
+				ask me a question, collaborate on a project, or hire me for consulting work,
+				please reach out to me at <a href='mailto:mcnealmaxwell@gmail.com'>mcnealmaxwell@gmail.com</a>.
+			</p>
+		</div>
+	</div>
+</BaseLayout>

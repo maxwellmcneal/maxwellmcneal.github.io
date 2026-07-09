@@ -1,0 +1,39 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogListing from '../../components/BlogListing.astro';
+import { SITE_TITLE } from '../../consts';
+
+// Generate one page per tag (Astro Tutorial Unit 5 pattern).
+export async function getStaticPaths() {
+	const posts = await getCollection('blog');
+	const uniqueTags = [...new Set(posts.flatMap((post) => post.data.tags))];
+
+	return uniqueTags.map((tag) => {
+		const filteredPosts = posts
+			.filter((post) => post.data.tags.includes(tag))
+			.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+		return {
+			params: { tag },
+			props: { posts: filteredPosts },
+		};
+	});
+}
+
+const { tag } = Astro.params;
+const { posts } = Astro.props;
+
+// All tags for the sidebar.
+const allPosts = await getCollection('blog');
+const allTags = [...new Set(allPosts.flatMap((post) => post.data.tags))].sort();
+---
+
+<BaseLayout title={`#${tag} | ${SITE_TITLE}`} description={`Posts tagged ${tag}.`}>
+	<BlogListing
+		posts={posts}
+		allTags={allTags}
+		activeTag={tag}
+		heading={`#${tag}`}
+		subheading={`${posts.length} post${posts.length === 1 ? '' : 's'} tagged "${tag}".`}
+	/>
+</BaseLayout>

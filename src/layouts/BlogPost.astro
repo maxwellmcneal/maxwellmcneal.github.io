@@ -1,0 +1,43 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import Tag from '../components/Tag.astro';
+
+type Props = CollectionEntry<'blog'>['data'];
+
+const { title, description, pubDate, updatedDate, tags = [] } = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+	<article class="mx-auto max-w-3xl px-4 py-12 sm:px-6">
+		<header class="mb-8">
+			<p class="text-sm text-muted">
+				<FormattedDate date={pubDate} />
+				{
+					updatedDate && (
+						<span class="italic">
+							{' '}&middot; Updated <FormattedDate date={updatedDate} />
+						</span>
+					)
+				}
+			</p>
+			<h1 class="mt-2 text-3xl font-bold leading-tight tracking-tight sm:text-4xl">{title}</h1>
+			{
+				tags.length > 0 && (
+					<div class="mt-4 flex flex-wrap gap-2">
+						{tags.map((tag) => (
+							<Tag tag={tag} />
+						))}
+					</div>
+				)
+			}
+		</header>
+		<div class="prose">
+			<slot />
+		</div>
+		<footer class="mt-12 border-t border-border pt-6">
+			<a href="/blog" class="text-accent hover:underline">&larr; Back to all posts</a>
+		</footer>
+	</article>
+</BaseLayout>

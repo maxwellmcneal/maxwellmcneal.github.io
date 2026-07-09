@@ -1,0 +1,20 @@
+---
+// A single tag pill that links to its tag page.
+interface Props {
+	tag: string;
+	active?: boolean;
+}
+const { tag, active = false } = Astro.props;
+---
+
+<a
+	href={`/tags/${tag}/`}
+	class:list={[
+		'inline-block rounded-full border px-3 py-0.5 text-sm transition-colors',
+		active
+			? 'border-accent bg-accent text-bg'
+			: 'border-border text-muted hover:border-accent hover:text-accent',
+	]}
+>
+	{tag}
+</a>
